@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synthwave Piano</title>
+    <link rel="icon" href="piano.png" type="image/x-png">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a, #333, #2b2b2b);
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            overflow: hidden;
+        }
+
+        .frame {
+            padding: 20px;
+            border: 5px solid #ff4d4d;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 77, 77, 0.7);
+            position: relative;
+        }
+
+        .piano {
+            display: flex;
+            position: relative;
+            flex-wrap: wrap;
+        }
+
+        .key {
+            width: 50px;
+            height: 200px;
+            margin: 2px;
+            background-color: #1a1a1a;
+            border: 2px solid #ff4d4d;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(255, 77, 77, 0.7);
+            transition: all 0.2s ease;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 10px;
+            font-size: 12px;
+            color: #ff4d4d;
+        }
+
+        .key.black {
+            width: 30px;
+            height: 120px;
+            background-color: #333;
+            position: absolute;
+            z-index: 2;
+            margin-left: -15px;
+            top: 0;
+            color: #fff;
+        }
+
+        .key[data-note="C_sharp"] { left: 60px; }
+        .key[data-note="D_sharp"] { left: 114px; }
+        .key[data-note="F_sharp"] { left: 229px; }
+        .key[data-note="G_sharp"] { left: 290px; }
+        .key[data-note="A_sharp"] { left: 348px; }
+
+        .key.active {
+            background-color: #ff4d4d;
+            box-shadow: 0 0 25px rgba(255, 77, 77, 1);
+        }
+
+        @media (max-width: 600px) {
+            .key {
+                width: 40px;
+                height: 150px;
+            }
+
+            .key.black {
+                width: 24px;
+                height: 100px;
+                margin-left: -12px;
+            }
+
+            .key[data-note="C_sharp"] { left: 48px; }
+            .key[data-note="D_sharp"] { left: 92px; }
+            .key[data-note="F_sharp"] { left: 190px; }
+            .key[data-note="G_sharp"] { left: 222px; }
+            .key[data-note="A_sharp"] { left: 266px; }
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 0 20px;
+            font-size: 10px;
+            text-align: center;
+            color: #ff4d4d;
+        }
+
+        .footer a {
+            color: #ff4d4d;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer a:hover {
+            color: #fff;
+        }
+
+        .logo {
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            width: 140px;
+            height: 80px;
+            background-image: url('logo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            transition: transform 0.4s ease-in-out;
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+        }
+
+        /* Key animations */
+        .key:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 25px rgba(255, 77, 77, 1);
+        }
+    </style>
+</head>
+<body>
+    <div class="frame">
+        <div class="piano">
+            <div class="key" data-note="C">C<br>(d)</div>
+            <div class="key black" data-note="C_sharp">C#<br>(e)</div>
+            <div class="key" data-note="D">D<br>(r)</div>
+            <div class="key black" data-note="D_sharp">D#<br>(u)</div>
+            <div class="key" data-note="E">E<br>(m)</div>
+            <div class="key" data-note="F">F<br>(f)</div>
+            <div class="key black" data-note="F_sharp">F#<br>(y)</div>
+            <div class="key" data-note="G">G<br>(s)</div>
+            <div class="key black" data-note="G_sharp">G#<br>(h)</div>
+            <div class="key" data-note="A">A<br>(l)</div>
+            <div class="key black" data-note="A_sharp">A#<br>(j)</div>
+            <div class="key" data-note="B">B<br>(t)</div>
+            <div class="key" data-note="C2">C2<br>(D)</div>
+        </div>
+    </div>
+
+    <!-- Audio elements -->
+    <audio id="C" src="C.mp3"></audio>
+    <audio id="C_sharp" src="C_sharp.mp3"></audio>
+    <audio id="D" src="D.mp3"></audio>
+    <audio id="D_sharp" src="D_sharp.mp3"></audio>
+    <audio id="E" src="E.mp3"></audio>
+    <audio id="F" src="F.mp3"></audio>
+    <audio id="F_sharp" src="F_sharp.mp3"></audio>
+    <audio id="G" src="G.mp3"></audio>
+    <audio id="G_sharp" src="G_sharp.mp3"></audio>
+    <audio id="A" src="A.mp3"></audio>
+    <audio id="A_sharp" src="A_sharp.mp3"></audio>
+    <audio id="B" src="B.mp3"></audio>
+    <audio id="C2" src="C2.mp3"></audio>
+
+    <script>
+        const keys = document.querySelectorAll('.key');
+        const keyMap = {
+            'd': 'C', 'r': 'D', 'm': 'E', 'f': 'F', 's': 'G', 'l': 'A', 't': 'B', 'D': 'C2',
+            'e': 'C_sharp', 'u': 'D_sharp', 'y': 'F_sharp', 'h': 'G_sharp', 'j': 'A_sharp',
+            // Added more keys for desktop keyboard mapping
+            'w': 'C', 'x': 'D', 'c': 'E', 'v': 'F', 'b': 'G', 'n': 'A', 'o': 'B'
+        };
+
+        keys.forEach(key => {
+            key.addEventListener('mousedown', () => playSound(key));
+            key.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                playSound(key);
+            });
+
+            // Hover sound effect
+            key.addEventListener('mouseover', () => {
+                playHoverSound(key);
+            });
+        });
+
+        // Multi-key touch support for mobile
+        document.addEventListener('touchstart', function(e) {
+            if (e.target.classList.contains('key')) {
+                playSound(e.target);
+            }
+        }, { passive: false });
+
+        document.addEventListener('keydown', (e) => {
+            const note = keyMap[e.key];
+            if (note) {
+                const keyElement = document.querySelector(`.key[data-note="${note}"]`);
+                playSound(keyElement);
+            }
+        });
+
+        function playSound(key) {
+            if (!key) return;
+            const note = key.dataset.note;
+            const audio = document.getElementById(note).cloneNode();
+            audio.currentTime = 0; // Rewind to start
+            audio.play();
+            key.classList.add('active');
+
+            setTimeout(() => {
+                key.classList.remove('active');
+            }, 200);
+        }
+
+        // Play sound on hover with reduced volume
+        function playHoverSound(key) {
+            if (!key) return;
+            const note = key.dataset.note;
+            const audio = document.getElementById(note).cloneNode();
+            audio.volume = 0.2; // Lower volume for hover effect
+            audio.currentTime = 0;
+            audio.play();
+        }
+    </script>
+
+    <div class="footer">
+        <div><i>Favicon by <a href="https://icons8.com/illustrations/author/zD2oqC8lLBBA">Icons 8</a> from <a href="https://icons8.com/illustrations">Ouch!</a></i></div>
+    </div>
+    <div class="logo"></div>
+</body>
+</html>
